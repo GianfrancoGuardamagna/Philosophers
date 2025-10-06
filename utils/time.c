@@ -10,5 +10,5 @@ long get_time(void)
 
 long get_timestamp(t_philo *philo)
 {
-	return (get_time() - philo->data->start_time);
+	return (get_time() - philo->data.start_time);
 }

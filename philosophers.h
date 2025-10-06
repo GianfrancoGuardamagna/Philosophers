@@ -14,6 +14,7 @@ typedef struct s_data
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
+	int				must_eat_count;
 	long			start_time;
 } t_data;
 
@@ -24,7 +25,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
-	t_data			*data;
+	t_data			data;
 } t_philo;
 
 
@@ -38,5 +39,10 @@ int	check_input(int argc, char **argv);
 /*Time*/
 long get_time(void);
 long get_timestamp(t_philo *philo);
+
+/*States*/
+void is_eating(t_philo *philo);
+void is_thinking(t_philo *philo);
+void is_sleeping(t_philo *philo);
 
 #endif

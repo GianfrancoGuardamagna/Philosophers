@@ -6,7 +6,7 @@
 #    By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/01 12:30:00 by gguardam          #+#    #+#              #
-#    Updated: 2025/10/01 12:30:00 by gguardam         ###   ########.fr        #
+#    Updated: 2025/10/06 17:33:58 by gguardam         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,12 +17,17 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 INCLUDES = -I.
 
 UTILS_DIR = utils
+PARSING_DIR = parsing
+STATES_DIR = states
 
 SRCS = main.c \
-		parser.c \
-		time.c \
+		$(PARSING_DIR)/parser.c \
+		$(UTILS_DIR)/time.c \
 		$(UTILS_DIR)/isint.c \
 		$(UTILS_DIR)/atoi.c \
+		$(STATES_DIR)/eat.c \
+		$(STATES_DIR)/think.c \
+		$(STATES_DIR)/sleep.c \
 
 
 OBJS = $(SRCS:.c=.o)
