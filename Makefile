@@ -19,8 +19,10 @@ INCLUDES = -I.
 UTILS_DIR = utils
 PARSING_DIR = parsing
 STATES_DIR = states
+SCENARIOS_DIR = scenarios
 
 SRCS = main.c \
+		initialize_philos.c \
 		$(PARSING_DIR)/parser.c \
 		$(UTILS_DIR)/time.c \
 		$(UTILS_DIR)/isint.c \
@@ -28,7 +30,8 @@ SRCS = main.c \
 		$(STATES_DIR)/eat.c \
 		$(STATES_DIR)/think.c \
 		$(STATES_DIR)/sleep.c \
-
+		$(STATES_DIR)/dead.c \
+		$(SCENARIOS_DIR)/one_philo.c \
 
 OBJS = $(SRCS:.c=.o)
 

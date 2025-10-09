@@ -12,19 +12,11 @@
 
 #include "philosophers.h"
 
-static void one_philo(t_philo *philo)
-{
-	is_eating(philo);
-	is_sleeping(philo);
-	is_thinking(philo);
-}
-
 void *philosopher_routine(void *arg)
 {
 	t_philo *philo;
 
 	philo = (t_philo *)arg;
-	printf("%d %d\n", philo->id, philo->data.n_philos);
 	if(philo->data.n_philos == 1)
 		one_philo(philo);
 	else if(philo->data.n_philos == 2)
@@ -59,52 +51,17 @@ void *philosopher_routine(void *arg)
 }
 
 //argv[1] is number of philosophers
-void	initialize_philos(t_philo *philos, char **argv)
-{
-	int	i;
-	t_data	data;
-
-	data.n_philos = ft_atoi(argv[1]);
-	data.start_time = get_time();
-	data.time_to_die = ft_atoi(argv[2]);
-	data.time_to_eat = ft_atoi(argv[3]);
-	data.time_to_sleep = ft_atoi(argv[4]);
-	data.must_eat_count = -1;
-
-	// if (argc == 6)
-	// 	data->must_eat_count = atoi(argv[5]);
-	i = 0;
-	while(i < ft_atoi(argv[1]))
-	{
-		philos[i].data = data;
-		philos[i].id = i + 1;
-		philos[i].last_meal_time = 0;
-		i++;
-	}
-	i = 0;
-	while (i < ft_atoi(argv[1]))
-	{
-		if (pthread_create(&philos[i].thread, NULL, philosopher_routine, &philos[i]) != 0)
-		{
-			printf("Failed to create thread %d\n", i);
-			free(philos);
-		}
-		i++;
-	}
-}
-
-//argv[1] is number of philosophers
 int	main(int argc, char **argv)
 {
 	t_philo		*philos;
 	int			i;
 
 	if(!check_input(argc, argv))
-		return (printf("Invalid Input, expecting INTS:\n{./philo 'number_of_philosophers' 'time_to_die' 'time_to_eat' 'time_to_sleep' [number_of_times_each_philosopher_must_eat]}\n")); //TO DO ERROR MSSG, control 0 philosophers
+		return (printf(invalid_input));
 	philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 	if (!philos)
-		return (printf("Memory allocation failed\n"));
-	initialize_philos(philos, argv);
+		return (printf(memory_allocation_error));
+	initialize_philos(philos, argv, argc);
 	i = 0;
 	while (i < ft_atoi(argv[1]))
 	{

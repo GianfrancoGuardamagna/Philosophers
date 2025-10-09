@@ -7,6 +7,8 @@ int	check_input(int argc, char **argv)
 	i = 1;
 	if(argc == 5 || argc == 6)
 	{
+		if(ft_atoi(argv[1]) <= 0)
+			return (0);
 		while(argv[i])
 		{
 			if(!ft_isint(argv[i]))

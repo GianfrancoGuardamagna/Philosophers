@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eat.c                                              :+:      :+:    :+:   */
+/*   dead.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,10 +12,8 @@
 
 #include "../philosophers.h"
 
-void is_eating(t_philo *philo)
+void is_dead(t_philo *philo)
 {
-	philo->last_meal_time = get_time();
-	philo->meals += 1;
-	printf("%ld %d is eating\n", get_timestamp(philo), philo->id);
-	usleep(philo->data.time_to_eat * 1000);
+	printf("%ld %d is dead\n", get_timestamp(philo), philo->id);
+	exit(0);
 }
