@@ -14,5 +14,11 @@
 
 void is_thinking(t_philo *philo)
 {
-	printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
+	if(!philo->data->there_is_a_dead_body_on_the_table)
+	{
+		pthread_mutex_lock(&philo->willpower);
+		if(!philo->data->there_is_a_dead_body_on_the_table)
+			printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
+		pthread_mutex_unlock(&philo->willpower);
+	}
 }

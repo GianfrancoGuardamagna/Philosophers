@@ -12,62 +12,59 @@
 
 #include "philosophers.h"
 
-void *philosopher_routine(void *arg)
+static void my_job_was_done(t_philo *philos, t_data *data, pthread_mutex_t	*forks)
 {
-	t_philo *philo;
+	int	i;
 
-	philo = (t_philo *)arg;
-	if(philo->data.n_philos == 1)
-		one_philo(philo);
-	else if(philo->data.n_philos == 2)
-		return (NULL);
-	else if(philo->data.n_philos == 3)
-		return (NULL);
-	else if(philo->data.n_philos > 3)
-		return (NULL);
-	// while(1)
-	// {
-	// 	is_thinking(philo);
-		
-	// 	pthread_mutex_lock(philo->fork_left);
-	// 	printf("%ld %d has taken a fork\n", get_timestamp(philo), philo->id);
-	// 	pthread_mutex_lock(philo->fork_right);
-	// 	printf("%ld %d has taken a fork\n", get_timestamp(philo), philo->id);
-		
-	// 	is_eating(philo);
-		
-	// 	pthread_mutex_unlock(philo->fork_left);
-	// 	pthread_mutex_unlock(philo->fork_right);
-		
-	// 	is_sleeping(philo);
-		
-	// 	if (get_time() - philo->last_meal_time >= philo->data->time_to_die)
-	// 	{
-	// 		printf("%ld %d died\n", get_time() - philo->data->start_time, philo->id);
-	// 		break;
-	// 	}
-	// }
-	return (NULL);
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		pthread_mutex_destroy(&philos[i].willpower);
+		i++;
+	}
+	free(forks);
+	free(data);
+	free(philos);
 }
 
-//argv[1] is number of philosophers
 int	main(int argc, char **argv)
 {
-	t_philo		*philos;
-	int			i;
+	t_philo			*philos;
+	t_data			*data;
+	pthread_t		monitor;
+	pthread_mutex_t	*forks;
+	int				i;
 
 	if(!check_input(argc, argv))
 		return (printf(invalid_input));
-	philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
-	if (!philos)
-		return (printf(memory_allocation_error));
-	initialize_philos(philos, argv, argc);
+	data = data_loader(argv, argc);
+	forks = fork_loader(data);
+	philos = philos_loader(data, forks);
+	if (pthread_create(&monitor, NULL, monitor_routine, philos) != 0)
+	{
+		printf("Failed to create monitor thread\n");
+		free(philos);
+		exit(1);
+	}
 	i = 0;
-	while (i < ft_atoi(argv[1]))
+	while(i < data->n_philos)
+	{
+		if (pthread_create(&philos[i].thread, NULL, philosopher_routine, &philos[i]) != 0)
+		{
+			printf("Failed to create thread %d\n", i);
+			free(philos);
+			exit(1);
+		}
+		i++;
+	}
+	pthread_join(monitor, NULL);
+	i = 0;
+	while (i < data->n_philos)
 	{
 		pthread_join(philos[i].thread, NULL);
 		i++;
 	}
-	free(philos);
+	my_job_was_done(philos, data, forks);
 	return (0);
 }
