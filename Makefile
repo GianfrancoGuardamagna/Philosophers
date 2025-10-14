@@ -6,32 +6,29 @@
 #    By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/01 12:30:00 by gguardam          #+#    #+#              #
-#    Updated: 2025/10/06 17:33:58 by gguardam         ###   ########.fr        #
+#    Updated: 2025/10/14 13:21:50 by gguardam         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = cc
+# CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
 CFLAGS = -Wall -Wextra -Werror -pthread
 INCLUDES = -I.
-
-UTILS_DIR = utils
-PARSING_DIR = parsing
-STATES_DIR = states
-SCENARIOS_DIR = scenarios
 
 SRCS = main.c \
 		loader.c \
 		monitor.c \
 		routine.c \
-		$(PARSING_DIR)/parser.c \
-		$(UTILS_DIR)/time.c \
-		$(UTILS_DIR)/isint.c \
-		$(UTILS_DIR)/atoi.c \
-		$(STATES_DIR)/eat.c \
-		$(STATES_DIR)/think.c \
-		$(STATES_DIR)/sleep.c \
+		parsing/parser.c \
+		utils/dead_comprobation.c \
+		utils/time.c \
+		utils/isint.c \
+		utils/atoi.c \
+		states/eat.c \
+		states/think.c \
+		states/sleep.c \
 
 OBJS = $(SRCS:.c=.o)
 

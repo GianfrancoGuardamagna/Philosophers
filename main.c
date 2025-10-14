@@ -6,7 +6,7 @@
 /*   By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 16:48:18 by gguardam          #+#    #+#             */
-/*   Updated: 2025/10/06 19:12:30 by gguardam         ###   ########.fr       */
+/*   Updated: 2025/10/14 13:20:34 by gguardam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void my_job_was_done(t_philo *philos, t_data *data, pthread_mutex_t	*fork
 		pthread_mutex_destroy(&philos[i].willpower);
 		i++;
 	}
+	pthread_mutex_destroy(&data->death_mutex);
 	free(forks);
 	free(data);
 	free(philos);
@@ -40,12 +41,14 @@ int	main(int argc, char **argv)
 		return (printf(invalid_input));
 	data = data_loader(argv, argc);
 	forks = fork_loader(data);
+	if(!forks)
+		return (1);
 	philos = philos_loader(data, forks);
 	if (pthread_create(&monitor, NULL, monitor_routine, philos) != 0)
 	{
 		printf("Failed to create monitor thread\n");
 		free(philos);
-		exit(1);
+		return (1);
 	}
 	i = 0;
 	while(i < data->n_philos)
@@ -54,7 +57,7 @@ int	main(int argc, char **argv)
 		{
 			printf("Failed to create thread %d\n", i);
 			free(philos);
-			exit(1);
+			return (1);
 		}
 		i++;
 	}

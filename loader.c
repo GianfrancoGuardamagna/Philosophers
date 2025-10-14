@@ -12,6 +12,7 @@ t_data	*data_loader(char **argv, int argc)
 	data->time_to_sleep = ft_atoi(argv[4]);
 	data->must_eat_count = 2147483647;
 	data->there_is_a_dead_body_on_the_table = 0;
+	pthread_mutex_init(&data->death_mutex, NULL);
 
 	if (argc == 6)
 		data->must_eat_count = atoi(argv[5]);
@@ -27,7 +28,7 @@ pthread_mutex_t	*fork_loader(t_data *data)
 	if (!forks)
 	{
 		printf(fork_error);
-		exit(1);
+		return (NULL);
 	}
 	i = 0;
 	while(i < data->n_philos)

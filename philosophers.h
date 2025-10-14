@@ -21,6 +21,7 @@ typedef struct s_data
 	int				must_eat_count;
 	long			start_time;
 	int				there_is_a_dead_body_on_the_table;
+	pthread_mutex_t	death_mutex;
 } t_data;
 
 typedef struct s_philo
@@ -45,6 +46,7 @@ void *monitor_routine(void *arg);
 /*Utils*/
 int	ft_isint(char *str);
 int	ft_atoi(const char *str);
+int	is_there_a_dead_body_on_the_table(t_philo *philo);
 
 /*Loader*/
 pthread_mutex_t	*fork_loader(t_data *data);
