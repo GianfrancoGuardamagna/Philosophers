@@ -60,6 +60,13 @@ static void im_full(t_philo *philo)
 	pthread_mutex_unlock(philo->fork_right);
 }
 
+static void one_philo_scenario(t_philo *philo)
+{
+	printf("%ld %d has taken a fork\n", get_timestamp(philo), philo->id);
+	usleep(philo->data->time_to_die * 1000);
+	return ;
+}
+
 void *philosopher_routine(void *arg)
 {
 	t_philo *philo;
@@ -68,6 +75,11 @@ void *philosopher_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	dead = is_there_a_dead_body_on_the_table(philo);
+	if(philo->data->n_philos == 1)
+	{
+		one_philo_scenario(philo);
+		return (NULL);
+	}
 	if (philo->id % 2 == 0)
 		usleep(philo->data->time_to_eat * 500);
 	while (!dead)
@@ -93,6 +105,5 @@ void *philosopher_routine(void *arg)
 		is_thinking(philo);
 		dead = is_there_a_dead_body_on_the_table(philo);
 	}
-	
 	return (NULL);
 }
