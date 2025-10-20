@@ -12,18 +12,14 @@
 
 #include "../philosophers.h"
 
-void is_eating(t_philo *philo)
+void	is_eating(t_philo *philo)
 {
-	int dead;
-
-	dead = is_there_a_dead_body_on_the_table(philo);
-	if(!dead)
+	if (!is_there_a_dead_body_on_the_table(philo))
 	{
 		pthread_mutex_lock(&philo->willpower);
 		philo->last_meal_time = get_time();
 		philo->meals += 1;
-		dead = is_there_a_dead_body_on_the_table(philo);
-		if(!dead)
+		if (!is_there_a_dead_body_on_the_table(philo))
 			printf("%ld %d is eating\n", get_timestamp(philo), philo->id);
 		pthread_mutex_unlock(&philo->willpower);
 		usleep(philo->data->time_to_eat * 1000);

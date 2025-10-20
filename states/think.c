@@ -12,16 +12,12 @@
 
 #include "../philosophers.h"
 
-void is_thinking(t_philo *philo)
+void	is_thinking(t_philo *philo)
 {
-	int dead;
-
-	dead = is_there_a_dead_body_on_the_table(philo);
-	if(!dead)
+	if (!is_there_a_dead_body_on_the_table(philo))
 	{
 		pthread_mutex_lock(&philo->willpower);
-		dead = is_there_a_dead_body_on_the_table(philo);
-		if(!dead)
+		if (!is_there_a_dead_body_on_the_table(philo))
 			printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
 		pthread_mutex_unlock(&philo->willpower);
 	}

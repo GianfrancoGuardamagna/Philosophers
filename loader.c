@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/30 16:48:18 by gguardam          #+#    #+#             */
+/*   Updated: 2025/10/14 13:20:34 by gguardam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 t_data	*data_loader(char **argv, int argc)
@@ -5,6 +17,8 @@ t_data	*data_loader(char **argv, int argc)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
 	data->n_philos = ft_atoi(argv[1]);
 	data->start_time = get_time();
 	data->time_to_die = ft_atoi(argv[2]);
@@ -13,7 +27,6 @@ t_data	*data_loader(char **argv, int argc)
 	data->must_eat_count = 2147483647;
 	data->there_is_a_dead_body_on_the_table = 0;
 	pthread_mutex_init(&data->death_mutex, NULL);
-
 	if (argc == 6)
 		data->must_eat_count = atoi(argv[5]);
 	return (data);
@@ -27,11 +40,11 @@ pthread_mutex_t	*fork_loader(t_data *data)
 	forks = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!forks)
 	{
-		printf(fork_error);
+		printf(FORK_ERROR);
 		return (NULL);
 	}
 	i = 0;
-	while(i < data->n_philos)
+	while (i < data->n_philos)
 	{
 		pthread_mutex_init(&forks[i], NULL);
 		i++;
@@ -47,11 +60,11 @@ t_philo	*philos_loader(t_data *data, pthread_mutex_t	*forks)
 	philos = malloc(sizeof(t_philo) * data->n_philos);
 	if (!philos)
 	{
-		printf(memory_allocation_error);
+		printf(MEMORY_ALLOCATION_ERROR);
 		return (NULL);
 	}
 	i = 0;
-	while(i < data->n_philos)
+	while (i < data->n_philos)
 	{
 		philos[i].data = data;
 		philos[i].id = i + 1;
