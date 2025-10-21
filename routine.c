@@ -6,14 +6,16 @@
 /*   By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 16:48:18 by gguardam          #+#    #+#             */
-/*   Updated: 2025/10/14 13:20:34 by gguardam         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:20:37 by gguardam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static int	am_i_the_last(t_philo *philo)
+static int	i_grabbed_it_first(t_philo *philo)
 {
+	if (is_there_a_dead_body_on_the_table(philo))
+		return (0);
 	pthread_mutex_lock(philo->fork_right);
 	if (is_there_a_dead_body_on_the_table(philo))
 	{
@@ -25,40 +27,12 @@ get_timestamp(philo), philo->id);
 	pthread_mutex_lock(philo->fork_left);
 	if (is_there_a_dead_body_on_the_table(philo))
 	{
-		pthread_mutex_unlock(philo->fork_right);
 		pthread_mutex_unlock(philo->fork_left);
+		pthread_mutex_unlock(philo->fork_right);
 		return (0);
 	}
-	printf("%ld %d has taken a fork\n", get_timestamp(philo), philo->id);
-	return (1);
-}
-
-static int	i_grabbed_it_first(t_philo *philo)
-{
-	if (is_there_a_dead_body_on_the_table(philo))
-		return (0);
-	if (philo->id == philo->data->n_philos)
-		return (am_i_the_last(philo));
-	else
-	{
-		pthread_mutex_lock(philo->fork_left);
-		if (is_there_a_dead_body_on_the_table(philo))
-		{
-			pthread_mutex_unlock(philo->fork_left);
-			return (0);
-		}
-		printf("%ld %d has taken a fork\n", \
+	printf("%ld %d has taken a fork\n", \
 get_timestamp(philo), philo->id);
-		pthread_mutex_lock(philo->fork_right);
-		if (is_there_a_dead_body_on_the_table(philo))
-		{
-			pthread_mutex_unlock(philo->fork_left);
-			pthread_mutex_unlock(philo->fork_right);
-			return (0);
-		}
-		printf("%ld %d has taken a fork\n", \
-get_timestamp(philo), philo->id);
-	}
 	return (1);
 }
 

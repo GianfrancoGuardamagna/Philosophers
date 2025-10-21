@@ -6,15 +6,14 @@
 #    By: gguardam <gguardam@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/01 12:30:00 by gguardam          #+#    #+#              #
-#    Updated: 2025/10/14 13:21:50 by gguardam         ###   ########.fr        #
+#    Updated: 2025/10/21 18:11:12 by gguardam         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
 INCLUDES = -I.
 
 SRCS = main.c \
